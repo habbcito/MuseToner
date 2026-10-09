@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="MuseToner.App/MuseToner.App.csproj" />
+  <Project Path="MuseToner.Core/MuseToner.Core.csproj" />
+  <Project Path="MuseToner.Tests/MuseToner.Tests.csproj" />
+</Solution>

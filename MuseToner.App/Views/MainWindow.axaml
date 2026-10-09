@@ -1,0 +1,202 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+        x:Class="MuseToner.App.Views.MainWindow"
+        Icon="/Assets/icon_app.ico"
+        Title="MuseToner"
+        FontFamily="{StaticResource TitleFont}"
+        Width="1280" Height="720"
+        Background="#FF171717"
+        Foreground="White">
+
+    <Window.Styles>
+        <!-- Mantiene el color del botón al pasar el mouse (con un tono más claro) -->
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#FFB84DFF" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Margin="40,24">
+
+        <!-- Título -->
+        <TextBlock Grid.Row="0"
+                   x:Name="TitleText"
+                   Text="MuseToner"
+                   FontSize="100"
+                   FontWeight="Bold"
+                   Foreground="#FFA200FF"
+                   HorizontalAlignment="Center" />
+
+        <!-- Barra de controles (arriba) -->
+        <Grid Grid.Row="1"
+              Margin="0,16"
+              ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto">
+
+            <!-- Selección de archivo -->
+            <StackPanel Grid.Column="0" Spacing="8" VerticalAlignment="Center">
+                <Button x:Name="Select_File"
+                        Content="Examinar Archivo"
+                        FontFamily="{StaticResource BodyFont}"
+                        Click="OnButtonClick"
+                        Background="#FFA200FF"
+                        Foreground="White"
+                        Height="32"
+                        HorizontalAlignment="Left" />
+            </StackPanel>
+
+            <!-- Original -->
+            <StackPanel Grid.Column="2" Spacing="8" VerticalAlignment="Center">
+                <TextBlock Text="Tonalidad Original"
+                           FontFamily="{StaticResource BodyFont}"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Foreground="#FFFF007F"
+                           HorizontalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ComboBox x:Name="Tonic_Input"
+                              Width="72" Height="32"
+                              Padding="6,4" FontSize="13"
+                              FontFamily="{StaticResource BodyFont}"
+                              Background="#FF00FF66"
+                              Foreground="Black"
+                              SelectedIndex="0">
+                        <ComboBoxItem Content="DO" />
+                        <ComboBoxItem Content="DO# / REb" />
+                        <ComboBoxItem Content="RE" />
+                        <ComboBoxItem Content="RE# / MIb" />
+                        <ComboBoxItem Content="MI" />
+                        <ComboBoxItem Content="FA" />
+                        <ComboBoxItem Content="FA# / SOLb" />
+                        <ComboBoxItem Content="SOL" />
+                        <ComboBoxItem Content="SOL# / LAb" />
+                        <ComboBoxItem Content="LA" />
+                        <ComboBoxItem Content="LA# / SIb" />
+                        <ComboBoxItem Content="SI" />
+                    </ComboBox>
+                    <ComboBox x:Name="Type_Input"
+                              Width="104" Height="32"
+                              Padding="6,4" FontSize="13"
+                              FontFamily="{StaticResource BodyFont}"
+                              Background="#FF00F0FF"
+                              Foreground="Black"
+                              SelectedIndex="0">
+                        <ComboBoxItem Content="Jónico (MAYOR)" />
+                        <ComboBoxItem Content="Dórico" />
+                        <ComboBoxItem Content="Frigio" />
+                        <ComboBoxItem Content="Lidio" />
+                        <ComboBoxItem Content="Mixolidio" />
+                        <ComboBoxItem Content="Eólico (MENOR NATURAL)" />
+                        <ComboBoxItem Content="Locrio" />
+                        <ComboBoxItem Content="Menor Armónico" />
+                        <ComboBoxItem Content="Mayor Armónico" />
+                        <ComboBoxItem Content="Frigio Dominante" />
+                        <ComboBoxItem Content="Dórico Ucraniano" />
+                        <ComboBoxItem Content="Doble Armónico Mayor" />
+                        <ComboBoxItem Content="Pentatónico* Mayor" />
+                        <ComboBoxItem Content="Enigmático" />
+                        <ComboBoxItem Content="Persa" />
+                        <ComboBoxItem Content="Húngaro Mayor" />
+                        <ComboBoxItem Content="Mixolidia b6" />
+                        <ComboBoxItem Content="Lidia #2" />
+                        <ComboBoxItem Content="Locria Natural 6" />
+                        <ComboBoxItem Content="Mayor Napolitana" />
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Final -->
+            <StackPanel Grid.Column="4" Spacing="8" VerticalAlignment="Center">
+                <TextBlock Text="Tonalidad Final"
+                           FontSize="14"
+                           FontFamily="{StaticResource BodyFont}"
+                           FontWeight="Bold"
+                           Foreground="#FFFF007F"
+                           HorizontalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ComboBox x:Name="Tonic_Output"
+                              Width="72" Height="32"
+                              Padding="6,4" FontSize="13"
+                              FontFamily="{StaticResource BodyFont}"
+                              Background="#FF00FF66"
+                              Foreground="Black"
+                              SelectedIndex="0">
+                        <ComboBoxItem Content="DO" />
+                        <ComboBoxItem Content="DO# / REb" />
+                        <ComboBoxItem Content="RE" />
+                        <ComboBoxItem Content="RE# / MIb" />
+                        <ComboBoxItem Content="MI" />
+                        <ComboBoxItem Content="FA" />
+                        <ComboBoxItem Content="FA# / SOLb" />
+                        <ComboBoxItem Content="SOL" />
+                        <ComboBoxItem Content="SOL# / LAb" />
+                        <ComboBoxItem Content="LA" />
+                        <ComboBoxItem Content="LA# / SIb" />
+                        <ComboBoxItem Content="SI" />
+                    </ComboBox>
+                    <ComboBox x:Name="Type_Output"
+                              Width="104" Height="32"
+                              Padding="6,4" FontSize="13"
+                              FontFamily="{StaticResource BodyFont}"
+                              Background="#FF00F0FF"
+                              Foreground="Black"
+                              SelectedIndex="0">
+                        <ComboBoxItem Content="Jónico (MAYOR)" />
+                        <ComboBoxItem Content="Dórico" />
+                        <ComboBoxItem Content="Frigio" />
+                        <ComboBoxItem Content="Lidio" />
+                        <ComboBoxItem Content="Mixolidio" />
+                        <ComboBoxItem Content="Eólico (MENOR NATURAL)" />
+                        <ComboBoxItem Content="Locrio" />
+                        <ComboBoxItem Content="Menor Armónico" />
+                        <ComboBoxItem Content="Mayor Armónico" />
+                        <ComboBoxItem Content="Frigio Dominante" />
+                        <ComboBoxItem Content="Dórico Ucraniano" />
+                        <ComboBoxItem Content="Doble Armónico Mayor" />
+                        <ComboBoxItem Content="Pentatónico* Mayor" />
+                        <ComboBoxItem Content="Enigmático" />
+                        <ComboBoxItem Content="Persa" />
+                        <ComboBoxItem Content="Húngaro Mayor" />
+                        <ComboBoxItem Content="Mixolidia b6" />
+                        <ComboBoxItem Content="Lidia #2" />
+                        <ComboBoxItem Content="Locria Natural 6" />
+                        <ComboBoxItem Content="Mayor Napolitana" />
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Guardar -->
+            <Button Grid.Column="6"
+                    x:Name="Save_File"
+                    Content="Guardar Archivo"
+                    FontFamily="{StaticResource BodyFont}"
+                    Click="OnSaveClick"
+                    Background="#FFA200FF"
+                    Foreground="White"
+                    Width="128" Height="32"
+                    HorizontalContentAlignment="Center"
+                    VerticalAlignment="Center" />
+        </Grid>
+
+        <!-- Mensajes de estado -->
+        <TextBlock Grid.Row="2"
+                   x:Name="StatusText"
+                   Text="..."
+                   FontFamily="{StaticResource BodyFont}"
+                   Foreground="#FFA1A1A1"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,12"
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center" />
+
+        <!-- Marcador del piano roll (ocupa todo el espacio restante) -->
+        <Border Grid.Row="3"
+                x:Name="PianoRollArea"
+                Background="#FF222222"
+                BorderBrush="#FF444444"
+                BorderThickness="1"
+                CornerRadius="4" />
+    </Grid>
+</Window>

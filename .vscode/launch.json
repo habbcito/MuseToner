@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Avalonia: MuseToner.App",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/MuseToner.App/MuseToner.App.csproj"
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="MuseToner.App.App"
+             xmlns:local="using:MuseToner.App"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <FontFamily x:Key="TitleFont">avares://MuseToner.App/Assets/Fonts/Title#After Burner Neue</FontFamily>
+        <FontFamily x:Key="BodyFont">avares://MuseToner.App/Assets/Fonts/Body#Pix32</FontFamily>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+</Application>
