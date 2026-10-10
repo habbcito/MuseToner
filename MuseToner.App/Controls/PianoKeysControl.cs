@@ -2,6 +2,7 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using MuseToner.Translations;
 
 namespace MuseToner.App.Controls;
 
@@ -31,7 +32,7 @@ public class PianoKeysControl : Control
             context.DrawLine(new Pen(Brushes.Gray, 1), new Point(0, y), new Point(PianoRollLayout.KeyWidth, y));
         }
 
-        // BUCLE 2: las etiquetas de los DO (va DESPUÉS del bucle 1)
+        // LOOP 2: The etiquettes of every C note.
         for (int note = PianoRollLayout.MinNote; note <= PianoRollLayout.MaxNote; note++)
         {
             if (note % 12 != 0) continue;
@@ -40,7 +41,7 @@ public class PianoKeysControl : Control
             int octave = (note / 12) - 1;
 
             FormattedText text = new FormattedText(
-                "DO" + octave,
+                Translator.NoteTranslateText(0) + octave,
                 CultureInfo.InvariantCulture,
                 FlowDirection.LeftToRight,
                 Typeface.Default,

@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Interactivity;
 using MuseToner.Core;
+using MuseToner.Translations;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
 
@@ -16,7 +17,13 @@ public partial class MainWindow : Window
 
     private MidiFile? _midi;
 
-    public MainWindow() => InitializeComponent();
+
+
+    public MainWindow() 
+    {
+        InitializeComponent();
+        ApplyTexts();
+    }
 
 
 
@@ -36,7 +43,7 @@ public partial class MainWindow : Window
 
         // 2. Options of selector.
         FilePickerOpenOptions options = new FilePickerOpenOptions();
-        options.Title = "Selecciona un archivo";
+        options.Title = Translator.SelectorTranslateText();
         options.AllowMultiple = false;
         options.FileTypeFilter = filters;
 
@@ -53,10 +60,10 @@ public partial class MainWindow : Window
         fileroot = archivos[0].TryGetLocalPath();
         if (fileroot == null)
         {
-            StatusText.Text = "No se pudo obtener la ruta del archivo";
+            StatusText.Text = Translator.NoRootTranslateText();
             return;
         }
-        StatusText.Text = "Se cargó el archivo: " + fileroot;
+        StatusText.Text = Translator.UploadedFileTranslateText(fileroot);
 
 
         try
@@ -66,7 +73,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            StatusText.Text = "Error al leer el archivo: " + ex.Message;
+            StatusText.Text = Translator.ErrorReadFileTranslateText(ex.Message);
             return;
         }
     }
@@ -79,7 +86,7 @@ public partial class MainWindow : Window
         // 1. Verify that a file exists.
         if (fileroot == null)
         {
-            StatusText.Text = "Primero debes cargar un archivo";
+            StatusText.Text = Translator.FirstUploadTranslateText();
             return;
         }
 
@@ -94,7 +101,7 @@ public partial class MainWindow : Window
         bool sameScale = Type_Input.SelectedIndex == Type_Output.SelectedIndex;
         if (sameTonic && sameScale)
         {
-            StatusText.Text = "La tonalidad original y la tonalidad desada son la misma";
+            StatusText.Text = Translator.SameTonicScaleTranslateText();
             return;
         }
 
@@ -115,18 +122,18 @@ public partial class MainWindow : Window
             List<Note> outOfScale = MidiTransposer.FindOutOfScaleNotes(original, originalTonic, originalScale);
             if (outOfScale.Count >  0)
             {
-                StatusText.Text = "Hay " + outOfScale.Count + " notas fuera de la escala. El archivo no pudo ser convertido";
+                StatusText.Text = Translator.OutOfScaleTranslateText(outOfScale.Count);
                 return;
             }
 
             MidiFile converted = MidiTransposer.Convert(original, originalTonic, originalScale, finalTonic, finalScale);
             converted.Write(outputRoot, true);
 
-            StatusText.Text = "Se exportó el archivo con los cambios: " + outputRoot;
+            StatusText.Text = Translator.ExportedTranslateText(outputRoot);
         }
         catch (Exception ex)
         {
-            StatusText.Text = "Error al exportar: " + ex.Message;
+            StatusText.Text = Translator.ErrorExportingTranslateText(ex.Message);
         }
     }
 
@@ -155,5 +162,31 @@ public partial class MainWindow : Window
             List<NoteInfo> notes = NoteAnalyzer.Analyze(_midi, tonic, scale);
             PianoRoll.SetNotes(notes);
         }
+    }
+
+
+
+    private void ApplyTexts()
+    {
+        // Botones y etiquetas
+        Select_File.Content = Translator.ChargeButtonTranslateText();
+        Save_File.Content = Translator.SaveButtonTranslateText();
+        OriginalKeyLabel.Text = Translator.OriginalKeyTranslateText();
+        FinalKeyLabel.Text = Translator.FinalKeyTranslateText();
+
+        // Listas desplegables
+        Tonic_Input.ItemsSource = Translator.AllNotes();
+        Tonic_Output.ItemsSource = Translator.AllNotes();
+        Type_Input.ItemsSource = Translator.AllScales();
+        Type_Output.ItemsSource = Translator.AllScales();
+
+        Tonic_Input.SelectedIndex = 0;
+        Tonic_Output.SelectedIndex = 0;
+        Type_Input.SelectedIndex = 0;
+        Type_Output.SelectedIndex = 0;
+
+        StatusText.Text = Translator.WelcomeTranslateText();
+
+        RefreshPianoRoll();
     }
 }

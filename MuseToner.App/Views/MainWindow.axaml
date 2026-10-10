@@ -51,6 +51,7 @@
             <!-- Original -->
             <StackPanel Grid.Column="2" Spacing="8" VerticalAlignment="Center">
                 <TextBlock Text="Tonalidad Original"
+                           x:Name = "OriginalKeyLabel"
                            FontFamily="{StaticResource BodyFont}"
                            FontSize="14"
                            FontWeight="Bold"
@@ -65,18 +66,6 @@
                               Foreground="Black"
                               SelectionChanged="OnOriginalKeyChanged"
                               SelectedIndex="0">
-                        <ComboBoxItem Content="DO" />
-                        <ComboBoxItem Content="DO# / REb" />
-                        <ComboBoxItem Content="RE" />
-                        <ComboBoxItem Content="RE# / MIb" />
-                        <ComboBoxItem Content="MI" />
-                        <ComboBoxItem Content="FA" />
-                        <ComboBoxItem Content="FA# / SOLb" />
-                        <ComboBoxItem Content="SOL" />
-                        <ComboBoxItem Content="SOL# / LAb" />
-                        <ComboBoxItem Content="LA" />
-                        <ComboBoxItem Content="LA# / SIb" />
-                        <ComboBoxItem Content="SI" />
                     </ComboBox>
                     <ComboBox x:Name="Type_Input"
                               Width="104" Height="32"
@@ -86,26 +75,6 @@
                               Foreground="Black"
                               SelectionChanged="OnOriginalKeyChanged"
                               SelectedIndex="0">
-                        <ComboBoxItem Content="Jónico (MAYOR)" />
-                        <ComboBoxItem Content="Dórico" />
-                        <ComboBoxItem Content="Frigio" />
-                        <ComboBoxItem Content="Lidio" />
-                        <ComboBoxItem Content="Mixolidio" />
-                        <ComboBoxItem Content="Eólico (MENOR NATURAL)" />
-                        <ComboBoxItem Content="Locrio" />
-                        <ComboBoxItem Content="Menor Armónico" />
-                        <ComboBoxItem Content="Mayor Armónico" />
-                        <ComboBoxItem Content="Frigio Dominante" />
-                        <ComboBoxItem Content="Dórico Ucraniano" />
-                        <ComboBoxItem Content="Doble Armónico Mayor" />
-                        <ComboBoxItem Content="Pentatónico* Mayor" />
-                        <ComboBoxItem Content="Enigmático" />
-                        <ComboBoxItem Content="Persa" />
-                        <ComboBoxItem Content="Húngaro Mayor" />
-                        <ComboBoxItem Content="Mixolidia b6" />
-                        <ComboBoxItem Content="Lidia #2" />
-                        <ComboBoxItem Content="Locria Natural 6" />
-                        <ComboBoxItem Content="Mayor Napolitana" />
                     </ComboBox>
                 </StackPanel>
             </StackPanel>
@@ -113,6 +82,7 @@
             <!-- Final -->
             <StackPanel Grid.Column="4" Spacing="8" VerticalAlignment="Center">
                 <TextBlock Text="Tonalidad Final"
+                           x:Name = "FinalKeyLabel"
                            FontSize="14"
                            FontFamily="{StaticResource BodyFont}"
                            FontWeight="Bold"
@@ -126,18 +96,6 @@
                               Background="#FF00FF66"
                               Foreground="Black"
                               SelectedIndex="0">
-                        <ComboBoxItem Content="DO" />
-                        <ComboBoxItem Content="DO# / REb" />
-                        <ComboBoxItem Content="RE" />
-                        <ComboBoxItem Content="RE# / MIb" />
-                        <ComboBoxItem Content="MI" />
-                        <ComboBoxItem Content="FA" />
-                        <ComboBoxItem Content="FA# / SOLb" />
-                        <ComboBoxItem Content="SOL" />
-                        <ComboBoxItem Content="SOL# / LAb" />
-                        <ComboBoxItem Content="LA" />
-                        <ComboBoxItem Content="LA# / SIb" />
-                        <ComboBoxItem Content="SI" />
                     </ComboBox>
                     <ComboBox x:Name="Type_Output"
                               Width="104" Height="32"
@@ -146,26 +104,6 @@
                               Background="#FF00F0FF"
                               Foreground="Black"
                               SelectedIndex="0">
-                        <ComboBoxItem Content="Jónico (MAYOR)" />
-                        <ComboBoxItem Content="Dórico" />
-                        <ComboBoxItem Content="Frigio" />
-                        <ComboBoxItem Content="Lidio" />
-                        <ComboBoxItem Content="Mixolidio" />
-                        <ComboBoxItem Content="Eólico (MENOR NATURAL)" />
-                        <ComboBoxItem Content="Locrio" />
-                        <ComboBoxItem Content="Menor Armónico" />
-                        <ComboBoxItem Content="Mayor Armónico" />
-                        <ComboBoxItem Content="Frigio Dominante" />
-                        <ComboBoxItem Content="Dórico Ucraniano" />
-                        <ComboBoxItem Content="Doble Armónico Mayor" />
-                        <ComboBoxItem Content="Pentatónico* Mayor" />
-                        <ComboBoxItem Content="Enigmático" />
-                        <ComboBoxItem Content="Persa" />
-                        <ComboBoxItem Content="Húngaro Mayor" />
-                        <ComboBoxItem Content="Mixolidia b6" />
-                        <ComboBoxItem Content="Lidia #2" />
-                        <ComboBoxItem Content="Locria Natural 6" />
-                        <ComboBoxItem Content="Mayor Napolitana" />
                     </ComboBox>
                 </StackPanel>
             </StackPanel>

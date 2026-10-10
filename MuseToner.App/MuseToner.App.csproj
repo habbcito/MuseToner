@@ -26,5 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MuseToner.Core\MuseToner.Core.csproj" />
+    <ProjectReference Include="..\MuseToner.Translations\MuseToner.Translations.csproj" />
   </ItemGroup>
 </Project>
