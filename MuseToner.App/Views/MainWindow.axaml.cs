@@ -14,100 +14,146 @@ public partial class MainWindow : Window
 {
     private string? fileroot;
 
+    private MidiFile? _midi;
+
     public MainWindow() => InitializeComponent();
 
 
 
-    // Botón de Cargado.
+    // Charging button.
     private async void OnButtonClick(object? sender, RoutedEventArgs e)
     {
-        // 1. Filtro de tipos de archivo
-        List<string> patrones = new List<string>();
-        patrones.Add("*.mid");
-        patrones.Add("*.midi");
+        // 1. Filter of type file.
+        List<string> paterns = new List<string>();
+        paterns.Add("*.mid");
+        paterns.Add("*.midi");
 
-        FilePickerFileType filtroMidi = new FilePickerFileType("MIDI");
-        filtroMidi.Patterns = patrones;
+        FilePickerFileType midiFilter = new FilePickerFileType("MIDI");
+        midiFilter.Patterns = paterns;
 
-        List<FilePickerFileType> filtros = new List<FilePickerFileType>();
-        filtros.Add(filtroMidi);
+        List<FilePickerFileType> filters = new List<FilePickerFileType>();
+        filters.Add(midiFilter);
 
-        // 2. Opciones del selector
-        FilePickerOpenOptions opciones = new FilePickerOpenOptions();
-        opciones.Title = "Selecciona un archivo";
-        opciones.AllowMultiple = false;
-        opciones.FileTypeFilter = filtros;
+        // 2. Options of selector.
+        FilePickerOpenOptions options = new FilePickerOpenOptions();
+        options.Title = "Selecciona un archivo";
+        options.AllowMultiple = false;
+        options.FileTypeFilter = filters;
 
-        // 3. Abrir el selector
-        IReadOnlyList<IStorageFile> archivos = await StorageProvider.OpenFilePickerAsync(opciones);
+        // 3. Open selector file.
+        IReadOnlyList<IStorageFile> archivos = await StorageProvider.OpenFilePickerAsync(options);
 
-        // 4. Si el usuario canceló, salir
+        // 4. If user cancelled, quit.
         if (archivos.Count == 0)
         {
             return;
         }
 
-        // 5. Guardar la ruta y mostrar el mensaje
+        // 5. Save the root and show the message.
         fileroot = archivos[0].TryGetLocalPath();
+        if (fileroot == null)
+        {
+            StatusText.Text = "No se pudo obtener la ruta del archivo";
+            return;
+        }
         StatusText.Text = "Se cargó el archivo: " + fileroot;
+
+
+        try
+        {
+            _midi = MidiFile.Read(fileroot);
+            RefreshPianoRoll();
+        }
+        catch (Exception ex)
+        {
+            StatusText.Text = "Error al leer el archivo: " + ex.Message;
+            return;
+        }
     }
 
 
 
-    // Botón de Guardado.
+    // Saving Button.
     private void OnSaveClick(object? sender, RoutedEventArgs e)
     {
-        // 1. Validar que haya archivo.
+        // 1. Verify that a file exists.
         if (fileroot == null)
         {
             StatusText.Text = "Primero debes cargar un archivo";
             return;
         }
 
-        // 2. Leer lo elegido en los ComboBox.
-        int tonicaOriginal = Tonic_Input.SelectedIndex;
-        int tonicaFinal = Tonic_Output.SelectedIndex;
-        int[] escalaOriginal = ScaleCatalog.Scales[Type_Input.SelectedIndex].Degrees;
-        int[] escalaFinal = ScaleCatalog.Scales[Type_Output.SelectedIndex].Degrees;
+        // 2. Read the selected config of ComboBox.
+        int originalTonic = Tonic_Input.SelectedIndex;
+        int finalTonic = Tonic_Output.SelectedIndex;
+        int[] originalScale = ScaleCatalog.Scales[Type_Input.SelectedIndex].Degrees;
+        int[] finalScale = ScaleCatalog.Scales[Type_Output.SelectedIndex].Degrees;
 
-        // 3. Validar que haya algo que convertir.
-        bool mismaTonica = tonicaOriginal == tonicaFinal;
-        bool mismaEscala = Type_Input.SelectedIndex == Type_Output.SelectedIndex;
-        if (mismaTonica && mismaEscala)
+        // 3. Validate to convert some file.
+        bool sameTonic = originalTonic == finalTonic;
+        bool sameScale = Type_Input.SelectedIndex == Type_Output.SelectedIndex;
+        if (sameTonic && sameScale)
         {
-            StatusText.Text = "La tonalidad original es la misma que la tonalidad deseada";
+            StatusText.Text = "La tonalidad original y la tonalidad desada son la misma";
             return;
         }
 
-        // 4. Ruta de salida: misma carpeta, prefijo "output_".
-        string? carpeta = Path.GetDirectoryName(fileroot);
-        string nombreSalida = "output_" + Path.GetFileName(fileroot);
-        string rutaSalida = nombreSalida;
-        if (carpeta != null)
+        // 4. OUTPUT ROOT: same directory, with prefix "output_".
+        string? directory = Path.GetDirectoryName(fileroot);
+        string outputName = "output_" + Path.GetFileName(fileroot);
+        string outputRoot = outputName;
+        if (directory != null)
         {
-            rutaSalida = Path.Combine(carpeta, nombreSalida);
+            outputRoot = Path.Combine(directory, outputName);
         }
 
-        // 5. Leer, validar, convertir y escribir.
+        // 5. Read, validate, convert and write.
         try
         {
             MidiFile original = MidiFile.Read(fileroot);
 
-            List<Note> fuera = MidiTransposer.FindOutOfScaleNotes(original, tonicaOriginal, escalaOriginal);
-            if (fuera.Count >  0)
+            List<Note> outOfScale = MidiTransposer.FindOutOfScaleNotes(original, originalTonic, originalScale);
+            if (outOfScale.Count >  0)
             {
-                StatusText.Text = "Existen " + fuera.Count + " notas fuera de la escala, no se puede convertir el archivo";
+                StatusText.Text = "Hay " + outOfScale.Count + " notas fuera de la escala. El archivo no pudo ser convertido";
                 return;
             }
 
-            MidiFile convertido = MidiTransposer.Convert(original, tonicaOriginal, escalaOriginal, tonicaFinal, escalaFinal);
-            convertido.Write(rutaSalida, true);
+            MidiFile converted = MidiTransposer.Convert(original, originalTonic, originalScale, finalTonic, finalScale);
+            converted.Write(outputRoot, true);
 
-            StatusText.Text = "Se exportó el archivo con los cambios: " + rutaSalida;
+            StatusText.Text = "Se exportó el archivo con los cambios: " + outputRoot;
         }
         catch (Exception ex)
         {
             StatusText.Text = "Error al exportar: " + ex.Message;
+        }
+    }
+
+
+    // 
+    private void OnOriginalKeyChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        RefreshPianoRoll();
+    }
+
+
+
+
+    private void RefreshPianoRoll()
+    {
+        if (PianoRoll == null) return;
+        if (Tonic_Input.SelectedIndex < 0 || Type_Input.SelectedIndex < 0) return;
+
+        int tonic = Tonic_Input.SelectedIndex;
+        int[] scale = ScaleCatalog.Scales[Type_Input.SelectedIndex].Degrees;
+
+        PianoRoll.SetScale(tonic, scale);
+
+        if (_midi != null)
+        {
+            List<NoteInfo> notes = NoteAnalyzer.Analyze(_midi, tonic, scale);
+            PianoRoll.SetNotes(notes);
         }
     }
 }

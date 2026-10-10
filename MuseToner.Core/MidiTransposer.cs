@@ -4,15 +4,15 @@ using Melanchall.DryWetMidi.Interaction;
 
 namespace MuseToner.Core;
 
-/// <summary>Operaciones de transposición y cambio de escala sobre archivos MIDI.</summary>
+/// <summary>Transposition and scaling operations on MIDI files.</summary>
 public static class MidiTransposer
 {
     private const int MidiMin = 0;
     private const int MidiMax = 127;
 
     /// <summary>
-    /// Devuelve las notas que no pertenecen a la escala indicada (ignora el canal de percusión).
-    /// Si la lista está vacía, el archivo usa solo notas válidas.
+    /// Returns the notes that do not belong to the specified scale (ignores the percussion channel).
+    /// If the list is empty, the file uses only valid notes.
     /// </summary>
     public static List<Note> FindOutOfScaleNotes(MidiFile midi, int tonic, int[] scale)
     {
@@ -25,14 +25,14 @@ public static class MidiTransposer
 
 
 
-    /// <summary>Equivalente a ScaleHasOnlyRightNotes de la versión C++.</summary>
+    /// <summary>Determine whether there are any notes outside the scale.</summary>
     public static bool HasOnlyRightNotes(MidiFile midi, int tonic, int[] scale)
         => FindOutOfScaleNotes(midi, tonic, scale).Count == 0;
 
 
 
 
-    /// <summary>Traslada toda la melodía (menos la percusión) un número de semitonos.</summary>
+    /// <summary>Transpose the entire melody (except the percussion) by a certain number of semitones.</summary>
     public static void TranslateByOffset(MidiFile midi, int offset)
     {
         midi.ProcessNotes(note =>
@@ -46,8 +46,8 @@ public static class MidiTransposer
 
 
     /// <summary>
-    /// Cambia las alteraciones de una escala a otra manteniendo el grado de cada nota.
-    /// Las notas fuera de la escala inicial no se modifican.
+    /// Change the accidentals from one scale to another while maintaining the degree of each note.
+    /// Notes outside the initial scale are not modified.
     /// </summary>
     public static void ModifyScale(MidiFile midi, int tonic, int[] initialScale, int[] finalScale)
     {
@@ -70,8 +70,8 @@ public static class MidiTransposer
 
 
     /// <summary>
-    /// Convierte una melodía de (tónica, escala) a otra (tónica, escala) y devuelve un archivo nuevo.
-    /// No modifica el original.
+    /// Converts a melody from one (tonic, scale) to another (tonic, scale) and returns a new file.
+    /// It does not modify the original.
     /// </summary>
     public static MidiFile Convert(
         MidiFile input,
@@ -88,8 +88,7 @@ public static class MidiTransposer
 
         MidiFile output = input.Clone();
 
-        // 1) Cambio de tónica (si corresponde). 2) Cambio de escala sobre la tónica final.
-        // Cubre los tres casos de la versión C++ (ambos distintos, solo tónica, solo escala).
+        // 1) Change of tonic (if applicable). 2) Change of scale on the final tonic.
         if (differentTonics)
             TranslateByOffset(output, ScaleMath.NearestOctaveDistance(originalTonic, finalTonic));
 
@@ -102,7 +101,7 @@ public static class MidiTransposer
 
 
 
-    // Limita al rango MIDI válido y convierte al tipo que usa DryWetMIDI.
+    // Clamps to the valid MIDI range and converts to the type used by DryWetMIDI.
     private static SevenBitNumber ToNoteNumber(int value)
         => (SevenBitNumber)(byte)Math.Clamp(value, MidiMin, MidiMax);
 }

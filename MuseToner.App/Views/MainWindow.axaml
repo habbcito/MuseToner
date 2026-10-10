@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="using:MuseToner.App.Controls"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="MuseToner.App.Views.MainWindow"
         Icon="/Assets/icon_app.ico"
@@ -62,6 +63,7 @@
                               FontFamily="{StaticResource BodyFont}"
                               Background="#FF00FF66"
                               Foreground="Black"
+                              SelectionChanged="OnOriginalKeyChanged"
                               SelectedIndex="0">
                         <ComboBoxItem Content="DO" />
                         <ComboBoxItem Content="DO# / REb" />
@@ -82,6 +84,7 @@
                               FontFamily="{StaticResource BodyFont}"
                               Background="#FF00F0FF"
                               Foreground="Black"
+                              SelectionChanged="OnOriginalKeyChanged"
                               SelectedIndex="0">
                         <ComboBoxItem Content="Jónico (MAYOR)" />
                         <ComboBoxItem Content="Dórico" />
@@ -183,7 +186,7 @@
         <!-- Mensajes de estado -->
         <TextBlock Grid.Row="2"
                    x:Name="StatusText"
-                   Text="..."
+                   Text="¡Bienvenid@ a MuseToner!"
                    FontFamily="{StaticResource BodyFont}"
                    Foreground="#FFA1A1A1"
                    TextWrapping="Wrap"
@@ -192,11 +195,20 @@
                    TextAlignment="Center" />
 
         <!-- Marcador del piano roll (ocupa todo el espacio restante) -->
-        <Border Grid.Row="3"
-                x:Name="PianoRollArea"
-                Background="#FF222222"
-                BorderBrush="#FF444444"
-                BorderThickness="1"
-                CornerRadius="4" />
+        <ScrollViewer Grid.Row="3"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto">
+            <Grid ColumnDefinitions="Auto,*">
+
+                <controls:PianoKeysControl Grid.Column="0" />
+
+                <ScrollViewer Grid.Column="1"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Disabled">
+                    <controls:PianoRollControl x:Name="PianoRoll" />
+                </ScrollViewer>
+
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>

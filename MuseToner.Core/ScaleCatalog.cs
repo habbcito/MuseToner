@@ -1,9 +1,9 @@
 namespace MuseToner.Core;
 
-/// <summary>Una escala heptatónica: nombre y patrón de semitonos respecto a la tónica.</summary>
+/// <summary>A heptatonic scale: name and semitone pattern relative to the tonic.</summary>
 public sealed record ScalePattern(string Name, int[] Degrees);
 
-/// <summary>Tónicas y escalas disponibles. El índice de cada una coincide con el código usado en la versión C++.</summary>
+/// <summary>Available tonics and scales.</summary>
 public static class ScaleCatalog
 {
     public const int PercussionChannel = 9;
@@ -41,7 +41,6 @@ public static class ScaleCatalog
         new ScalePattern("Frigia Dominante",                    new[] { 0, 1, 4, 5, 7, 8, 10 }),  // 09
         new ScalePattern("Dórica Ucraniana",                    new[] { 0, 2, 3, 6, 7, 9, 10 }),  // 10
         new ScalePattern("Doble Armónica (Bizantina o Árabe)",  new[] { 0, 1, 4, 5, 7, 8, 11 }),  // 11
-        // OJO: una pentatónica mayor real tiene 5 notas (0, 2, 4, 7, 9). Se deja igual que en C++ para no alterar la lógica.
         new ScalePattern("Pentatónica Mayor",                   new[] { 0, 2, 4, 7, 9, 10, 11 }), // 12
         new ScalePattern("Enigmática",                          new[] { 0, 1, 4, 6, 8, 10, 11 }), // 13
         new ScalePattern("Persa",                               new[] { 0, 1, 4, 5, 6, 8, 11 }),  // 14
