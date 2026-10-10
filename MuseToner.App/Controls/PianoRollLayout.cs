@@ -2,11 +2,19 @@ namespace MuseToner.App.Controls;
 
 public static class PianoRollLayout
 {
-    public const int MinNote = 36;
-    public const int MaxNote = 96;
+    public static int MinNote { get; private set; } = 36;
+    public static int MaxNote { get; private set; } = 96;
     public const double RowHeight = 14;
     public const double KeyWidth = 70;
     public const double PixelsPerSecond = 100;
+
+
+
+    public static void SetRange(int minNote, int maxNote)
+    {
+        MinNote = minNote;
+        MaxNote = maxNote;
+    }
 
 
     public static int RowsCount()

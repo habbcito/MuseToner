@@ -133,20 +133,25 @@
                    TextAlignment="Center" />
 
         <!-- Marcador del piano roll (ocupa todo el espacio restante) -->
-        <ScrollViewer Grid.Row="3"
-                    HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto">
-            <Grid ColumnDefinitions="Auto,*">
+        <Grid Grid.Row="3" ColumnDefinitions="Auto,*">
 
-                <controls:PianoKeysControl Grid.Column="0" />
+            <!-- Teclas: sin scroll propio, se mueven por código -->
+            <ScrollViewer x:Name="KeysScroll"
+                        Grid.Column="0"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Hidden">
+                <controls:PianoKeysControl x:Name="PianoKeys" />
+            </ScrollViewer>
 
-                <ScrollViewer Grid.Column="1"
-                            HorizontalScrollBarVisibility="Auto"
-                            VerticalScrollBarVisibility="Disabled">
-                    <controls:PianoRollControl x:Name="PianoRoll" />
-                </ScrollViewer>
+            <!-- Roll: scroll en ambos ejes, barras siempre visibles -->
+            <ScrollViewer x:Name="RollScroll"
+                        Grid.Column="1"
+                        HorizontalScrollBarVisibility="Visible"
+                        VerticalScrollBarVisibility="Visible"
+                        ScrollChanged="OnRollScrollChanged">
+                <controls:PianoRollControl x:Name="PianoRoll" />
+            </ScrollViewer>
 
-            </Grid>
-        </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>

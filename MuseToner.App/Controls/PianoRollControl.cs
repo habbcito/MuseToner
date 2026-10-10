@@ -26,17 +26,17 @@ public class PianoRollControl : Control
     {
         _notes = notes;
 
-        // La duración total define el ancho del control
+        // Total duration defines the width.
         double maxEnd = 0;
         foreach (NoteInfo n in _notes)
         {
             double end = n.StartSeconds + n.DurationSeconds;
             if (end > maxEnd) maxEnd = end;
         }
-        _durationSeconds = maxEnd + 1;   // 1 s de margen
+        _durationSeconds = maxEnd + 1;   // 1 sec of margin.
 
-        InvalidateMeasure();   // recalculates the WIDTH (MeasureOverride)
-        InvalidateVisual();    // redibuja
+        InvalidateMeasure();   // Recalculates the WIDTH (MeasureOverride)
+        InvalidateVisual();    // Redraw.
     }
 
 
@@ -78,7 +78,7 @@ public class PianoRollControl : Control
 
         foreach (NoteInfo noteInfo in _notes)
         {
-            // Si la nota cae fuera del rango dibujable, se omite
+            // If the note is outside of the range , omit.
             if (noteInfo.NoteNumber < PianoRollLayout.MinNote || noteInfo.NoteNumber > PianoRollLayout.MaxNote)
                 continue;
 
@@ -87,7 +87,7 @@ public class PianoRollControl : Control
             double width  = noteInfo.DurationSeconds * PianoRollLayout.PixelsPerSecond;
             double height = PianoRollLayout.RowHeight;
 
-            // Evita que las notas muy cortas desaparezcan
+            // Trying don't hide the shortest notes.
             if (width < 2)
                 width = 2;
 

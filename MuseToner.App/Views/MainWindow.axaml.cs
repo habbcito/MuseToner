@@ -1,10 +1,12 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Interactivity;
 using MuseToner.Core;
+using MuseToner.App.Controls;
 using MuseToner.Translations;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
@@ -138,10 +140,17 @@ public partial class MainWindow : Window
     }
 
 
-    // 
+    // When the original key is changed, refresh info about midi notes and key notes.
     private void OnOriginalKeyChanged(object? sender, SelectionChangedEventArgs e)
     {
         RefreshPianoRoll();
+    }
+
+
+
+    private void OnRollScrollChanged(object? sender, ScrollChangedEventArgs e)
+    {
+        KeysScroll.Offset = new Vector(0, RollScroll.Offset.Y);
     }
 
 
@@ -160,6 +169,13 @@ public partial class MainWindow : Window
         if (_midi != null)
         {
             List<NoteInfo> notes = NoteAnalyzer.Analyze(_midi, tonic, scale);
+
+            int minNote;
+            int maxNote;
+            NoteAnalyzer.GetNoteRange(notes, out minNote, out maxNote);
+            PianoRollLayout.SetRange(minNote, maxNote);
+
+            PianoKeys.Refresh();
             PianoRoll.SetNotes(notes);
         }
     }
@@ -168,13 +184,13 @@ public partial class MainWindow : Window
 
     private void ApplyTexts()
     {
-        // Botones y etiquetas
+        // Buttons and etiquettes.
         Select_File.Content = Translator.ChargeButtonTranslateText();
         Save_File.Content = Translator.SaveButtonTranslateText();
         OriginalKeyLabel.Text = Translator.OriginalKeyTranslateText();
         FinalKeyLabel.Text = Translator.FinalKeyTranslateText();
 
-        // Listas desplegables
+        // ComboBoxes.
         Tonic_Input.ItemsSource = Translator.AllNotes();
         Tonic_Output.ItemsSource = Translator.AllNotes();
         Type_Input.ItemsSource = Translator.AllScales();

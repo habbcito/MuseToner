@@ -13,11 +13,13 @@ public class PianoKeysControl : Control
         return new Size(PianoRollLayout.KeyWidth, PianoRollLayout.TotalHeight());
     }
 
+
+
     public override void Render(DrawingContext context)
     {
         base.Render(context);
 
-        // BUCLE 1: las teclas (el que ya tienes)
+        // LOOP 1: Piano Keys.
         for (int note = PianoRollLayout.MinNote; note <= PianoRollLayout.MaxNote; note++)
         {
             double y = PianoRollLayout.YValueOfNote(note);
@@ -50,5 +52,13 @@ public class PianoKeysControl : Control
 
             context.DrawText(text, new Point(2, y + (PianoRollLayout.RowHeight - text.Height) / 2));
         }
+    }
+
+
+
+    public void Refresh()
+    {
+        InvalidateMeasure();   // Height chaged.
+        InvalidateVisual();    // Redraw.
     }
 }
